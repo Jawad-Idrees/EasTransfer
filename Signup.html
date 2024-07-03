@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <section class="vh-100" style="background-color: #706a6a;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-10">
+                    <div class="card" style="border-radius: 1rem;">
+                        <div class="row g-0">
+                            <div class="col-md-6 col-lg-5 d-none d-md-block">
+                                <img src="https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="signup form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                            </div>
+                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                                <div class="card-body p-4 p-lg-5 text-black">
+                                    <form id="signupForm" onsubmit="return validateForm(event)">
+                                        <div class="d-flex align-items-center mb-3 pb-1">
+                                            <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                                            <span class="h1 fw-bold mb-0">Bank Management System</span>
+                                        </div>
+                                        
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign up for an account</h5>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="text" id="username" class="form-control form-control-lg" required />
+                                            <label class="form-label" for="username">Username</label>
+                                        </div>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="email" id="email" class="form-control form-control-lg" required />
+                                            <label class="form-label" for="email">Email address</label>
+                                        </div>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="password" id="password" class="form-control form-control-lg" required />
+                                            <label class="form-label" for="password">Password</label>
+                                        </div>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="password" id="confirmPassword" class="form-control form-control-lg" required />
+                                            <label class="form-label" for="confirmPassword">Re-enter Password</label>
+                                        </div>
+                                        <div class="pt-1 mb-4">
+                                            <button class="btn btn-dark btn-lg btn-block" type="submit">Sign Up</button>
+                                        </div>
+                                        <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        async function validateForm(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            // Reset error message
+            errorMessage.classList.add('d-none');
+            errorMessage.textContent = '';
+
+            // Username validation
+            if (username.length < 3) {
+                showError('Username must be at least 3 characters long.');
+                return false;
+            }
+
+            // Email validation
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailPattern.test(email)) {
+                showError('Please enter a valid email address.');
+                return false;
+            }
+
+            // Password validation
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long.');
+                return false;
+            }
+
+            // Confirm password validation
+            if (password !== confirmPassword) {
+                showError('Passwords do not match.');
+                return false;
+            }
+
+            // If all validations pass, submit the form
+            const body = JSON.stringify({ username, email, password,confirmPassword });
+
+            try {
+                const response = await fetch("/user/sign_up", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: body
+
+                    
+                }
+                
+            );
+            window.location.href = "/signin"
+            
+            } catch (error) {
+                showError('An error occurred while signing up. Please try again later.');
+            }
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById("errorMessage");
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('d-none');
+        }
+    </script>
+</body>
+
+</html>
