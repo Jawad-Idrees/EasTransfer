@@ -10,7 +10,7 @@ from bson import ObjectId
 SECRET_KEY = "sdsfe45456@21!!"
 serializer = URLSafeTimedSerializer(SECRET_KEY)
 
-client = AsyncIOMotorClient("mongodb://localhost:27017")
+client = AsyncIOMotorClient("mongodb://eastransferdb:uAIrd9Uan0kg4pwc4Rq8Dv6PvOMweY8YB57Bu6nFwsUy21nvcbJp55tCu3KRmV2Y94OWip7HvPwdACDb2REwhA==@eastransferdb.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@eastransferdb@")
 db = client.Bank
 
 async def get_current_admin(request: Request):
