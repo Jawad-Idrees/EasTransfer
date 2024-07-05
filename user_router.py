@@ -12,7 +12,7 @@ from starlette.responses import RedirectResponse
 from dependencies import get_current_user
 
 router =  APIRouter()
-client= AsyncIOMotorClient("mongodb://localhost:27017")
+client= AsyncIOMotorClient("mongodb://eastransferdb:uAIrd9Uan0kg4pwc4Rq8Dv6PvOMweY8YB57Bu6nFwsUy21nvcbJp55tCu3KRmV2Y94OWip7HvPwdACDb2REwhA==@eastransferdb.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@eastransferdb@")
 db= client.Bank 
 users_collection = db.users 
 template= Jinja2Templates(directory="templates")
